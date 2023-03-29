@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <Navbar bg="primary" expand="md" className='navbar-dark'>
+    <Navbar bg="light" expand="md" className='shadow'>
       <Container fluid>
-        <Navbar.Brand as={Link} to="/">Grocery Store</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/" className='text-primary fw-semibold'>
+          Grocery Store
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
