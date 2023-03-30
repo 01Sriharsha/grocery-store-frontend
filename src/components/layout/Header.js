@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <Navbar bg="light" expand="md" className='shadow'>
+    <Navbar bg="light" expand="md" className='shadow' sticky='top'>
       <Container fluid>
         <Navbar.Brand as={Link} to="/" className='text-primary fw-semibold'>
           Grocery Store

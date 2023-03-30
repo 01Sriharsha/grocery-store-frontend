@@ -41,6 +41,7 @@ const AuthContext = ({ children }) => {
         navigate("/");
       })
       .catch((err) => {
+        console.log(err);
         toast.error(
           err.response.data ? err.response.data : "Failed to login",
           TOAST_PROP

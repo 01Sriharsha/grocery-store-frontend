@@ -5,3 +5,11 @@
   background-repeat: no-repeat !important;
   min-height: 90vh !important;
 }
+
+.register-bg{
+  background-image: url("./assets/register-bg.jpg");
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  min-height: 90vh !important;
+}

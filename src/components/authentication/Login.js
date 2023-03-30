@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { TOAST_PROP } from "../../App";
 import { CustomContext } from "../../context/AuthContext";
 
 export default function Login() {
@@ -17,13 +20,35 @@ export default function Login() {
     });
   };
 
+  const validate = () => {
+    if (
+      inputVal.userType.length === 0 ||
+      inputVal.email.length === 0 ||
+      inputVal.password.length === 0
+    ) {
+      toast.error("Fields cannot be empty!!", TOAST_PROP);
+      return false;
+    }
+    if (inputVal.userType === "customer" && !inputVal.email.includes("@")) {
+      toast.error("Enter a valid email!!", TOAST_PROP);
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    context?.login(inputVal);
+    if (!validate()) return;
+    const loginData = {
+      userType: inputVal.userType,
+      userId: inputVal.email,
+      password: inputVal.password,
+    };
+    context?.login(loginData);
   };
 
   return (
-    <Row className="border-0">
+    <Row className="border-0 m-0">
       <Col md={7} className="login-bg p-0"></Col>
       <Col
         md={5}
@@ -47,9 +72,9 @@ export default function Login() {
           </Form.Group>
 
           <Form.Group className="my-3">
-            <Form.Label htmlFor="email">Email</Form.Label>
+            <Form.Label htmlFor="email">User Id / Email</Form.Label>
             <Form.Control
-              type="email"
+              type={inputVal.userType === "admin" ? "text" : "email"}
               name="email"
               id="email"
               placeholder="Enter your email"
@@ -75,6 +100,10 @@ export default function Login() {
               Login
             </Button>
           </div>
+
+          <p className="text-center">
+            Not a member? <Link to="/register">Register Here</Link>
+          </p>
         </Form>
       </Col>
     </Row>

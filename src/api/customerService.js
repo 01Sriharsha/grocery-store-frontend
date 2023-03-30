@@ -7,3 +7,6 @@ const apiClient = axios.create({
 });
 
 export const loginUser = (loginData) => apiClient.post("/login", loginData);
+
+export const createCustomer = (customerData) =>
+  apiClient.post("/customers", customerData);
