@@ -10,3 +10,5 @@ export const loginUser = (loginData) => apiClient.post("/login", loginData);
 
 export const createCustomer = (customerData) =>
   apiClient.post("/customers", customerData);
+
+export const getAllCustomers = () => apiClient.get("/customers")

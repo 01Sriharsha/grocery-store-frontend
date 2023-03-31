@@ -2,40 +2,55 @@ import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import {
-  createCategory,
+  createSubCategory,
   deleteCategory,
+  deleteSubCategory,
   getAllCategories,
-  getSingleCategory,
-  updateCategory,
+  getAllSubCategories,
+  getSingleSubCategory,
+  updateSubCategory,
 } from "../../../api/AdminService";
 import { TOAST_PROP } from "../../../App";
 import { AiFillDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
-const AddCategory = () => {
+const AddSubCategory = () => {
   const [inputVal, setIputVal] = useState({
+    categoryId: "",
     name: "",
     description: "",
   });
 
   const [categories, setCategories] = useState([]);
 
-  const [categoryId, setCategoryId] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
+
+  const [subCategoryId, setSubCategoryId] = useState("");
 
   const loadAllCategories = () =>
     getAllCategories()
       .then((res) => setCategories(res.data))
       .catch((err) => console.log(err));
 
-  const loadSingleCategory = (id) => {
-    setCategoryId(id);
-    getSingleCategory(id).then((res) => {
-      setIputVal({ name: res.data.name, description: res.data.description });
+  const loadAllSubCategories = () =>
+    getAllSubCategories()
+      .then((res) => setSubCategories(res.data))
+      .catch((err) => console.log(err));
+
+  const loadSingleSubCategory = (id) => {
+    setSubCategoryId(id);
+    getSingleSubCategory(id).then((res) => {
+      setIputVal({
+        categoryId: res.data.category.name,
+        name: res.data.name,
+        description: res.data.description,
+      });
     });
   };
 
   useEffect(() => {
     loadAllCategories();
+    loadAllSubCategories();
   }, []);
 
   const handleChange = (event) => {
@@ -45,7 +60,11 @@ const AddCategory = () => {
   };
 
   const validate = () => {
-    if (inputVal.name.length === 0 || inputVal.description.length === 0) {
+    if (
+      inputVal.categoryId.length === 0 ||
+      inputVal.name.length === 0 ||
+      inputVal.description.length === 0
+    ) {
       toast.error("Fields cannot be empty!!", TOAST_PROP);
       return false;
     }
@@ -57,82 +76,109 @@ const AddCategory = () => {
     if (!validate()) return;
     toast
       .promise(
-        categoryId
-          ? updateCategory(categoryId, inputVal)
-          : createCategory(inputVal),
+        subCategoryId
+          ? updateSubCategory(Number(subCategoryId), inputVal)
+          : createSubCategory(inputVal.categoryId, inputVal),
         {
           pending: "Adding...",
-          success: "Category added successfully!!",
+          success: "Sub Category added successfully!!",
         },
         TOAST_PROP
       )
       .then((res) => {
-        loadAllCategories();
+        loadAllSubCategories();
         clear();
-        setCategoryId("");
+        setSubCategoryId("");
       })
       .catch((err) => {
-        toast.error("Failed to add category!!", TOAST_PROP);
+        console.log(err);
+        toast.error("Failed to add sub category!!", TOAST_PROP);
       });
   };
 
   const handleDelete = (id) => {
     toast
       .promise(
-        deleteCategory(id),
+        deleteSubCategory(id),
         {
           pending: "Removing...",
-          success: "Category removed successfully!!",
+          success: "Sub category removed successfully!!",
         },
         TOAST_PROP
       )
       .then((res) => {
-        const newArr = categories.filter((category) => category.id !== id);
-        setCategories(newArr);
+        const newArr = subCategories.filter(
+          (subcategory) => subcategory.id !== id
+        );
+        setSubCategories(newArr);
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Failed to remove category!!", TOAST_PROP);
+        toast.error("Failed to remove sub category!!", TOAST_PROP);
       });
   };
 
   const clear = () =>
     setIputVal({
+      categoryId: "",
       name: "",
       description: "",
     });
 
+  console.log(inputVal);
+
   return (
     <div className="container">
       <h2 className="text-center text-primary my-3 fw-semibold text-uppercase">
-        Add Category
+        Add Sub Category
       </h2>
       <Row className="m-0">
         <Col md={5} className="my-2">
           <Form onSubmit={handleSubmit}>
             <Form.Group className="my-3">
-              <Form.Label>Category Name</Form.Label>
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                className="text-center text-capitalize"
+                as="select"
+                name="categoryId"
+                value={inputVal.categoryId}
+                onChange={handleChange}
+              >
+                <option hidden>
+                  {subCategoryId ? inputVal.categoryId : "--Select Category--"}
+                </option>
+                {categories?.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+
+            <Form.Group className="my-3">
+              <Form.Label>Sub Category Name</Form.Label>
               <Form.Control
                 name="name"
-                placeholder="Enter category name"
+                placeholder="Enter sub category name"
                 value={inputVal.name}
                 onChange={handleChange}
               />
             </Form.Group>
+
             <Form.Group className="my-3">
-              <Form.Label>Category Description</Form.Label>
+              <Form.Label>Sub Category Description</Form.Label>
               <Form.Control
                 rows="4"
                 as="textarea"
                 name="description"
-                placeholder="Enter category description"
+                placeholder="Enter Sub category description"
                 value={inputVal.description}
                 onChange={handleChange}
               />
             </Form.Group>
             <div className="d-flex justify-content-end my-3">
               <Button variant="primary" type="submit">
-                {categoryId ? "Update Category" : "Add Category"}
+                {subCategoryId ? "Update Sub Category" : "Add Sub Category"}
               </Button>
             </div>
           </Form>
@@ -144,21 +190,24 @@ const AddCategory = () => {
             <thead>
               <tr className="text-center text-secondary">
                 <th>Id</th>
-                <th>Category</th>
+                <th>Subcategory</th>
                 <th>Description</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {categories.map((category) => (
-                <tr key={category.id} className="text-center text-capitalize">
-                  <td>{category.id}</td>
-                  <td>{category.name}</td>
+              {subCategories?.map((subcategory) => (
+                <tr
+                  key={subcategory.id}
+                  className="text-center text-capitalize"
+                >
+                  <td>{subcategory.id}</td>
+                  <td>{subcategory.name}</td>
                   <td>
                     <textarea
                       disabled
                       rows="1"
-                      value={category.description}
+                      value={subcategory.description}
                       className="border-0 text-center"
                     />
                   </td>
@@ -168,13 +217,13 @@ const AddCategory = () => {
                         role="button"
                         size="1.5rem"
                         color="green"
-                        onClick={() => loadSingleCategory(category.id)}
+                        onClick={() => loadSingleSubCategory(subcategory.id)}
                       />
                       <AiFillDelete
                         role="button"
                         size="1.5rem"
                         color="red"
-                        onClick={() => handleDelete(category.id)}
+                        onClick={() => handleDelete(subcategory.id)}
                       />
                     </div>
                   </td>
@@ -188,4 +237,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddSubCategory;
