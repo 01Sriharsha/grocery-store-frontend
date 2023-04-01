@@ -14,7 +14,7 @@ import { TOAST_PROP } from "../../../App";
 import { AiFillDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
-const AddSubCategory = () => {
+const ManageSubCategory = () => {
   const [inputVal, setIputVal] = useState({
     categoryId: "",
     name: "",
@@ -129,12 +129,11 @@ const AddSubCategory = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center text-primary my-3 fw-semibold text-uppercase">
-        Add Sub Category
-      </h2>
       <Row className="m-0">
         <Col md={5} className="my-2">
           <Form onSubmit={handleSubmit}>
+            <h4 className="text-center text-primary my-3">Add Sub Category</h4>
+            <hr />
             <Form.Group className="my-3">
               <Form.Label>Category</Form.Label>
               <Form.Control
@@ -185,7 +184,9 @@ const AddSubCategory = () => {
         </Col>
 
         {/*display all categories*/}
-        <Col md={7} className="my-3">
+        <Col md={7} className="my-2">
+          <h4 className="text-center text-primary my-3">Added Sub Categories</h4>
+          <hr />
           <Table>
             <thead>
               <tr className="text-center text-secondary">
@@ -237,4 +238,4 @@ const AddSubCategory = () => {
   );
 };
 
-export default AddSubCategory;
+export default ManageSubCategory;

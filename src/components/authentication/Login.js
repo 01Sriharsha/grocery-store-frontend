@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { TOAST_PROP } from "../../App";
 import { CustomContext } from "../../context/AuthContext";
 
 export default function Login() {
   const context = CustomContext();
+
+  const navigate = useNavigate();
 
   const [inputVal, setInputVal] = useState({
     userType: "",
@@ -45,6 +47,7 @@ export default function Login() {
       password: inputVal.password,
     };
     context?.login(loginData);
+    console.log(context.user);
   };
 
   return (

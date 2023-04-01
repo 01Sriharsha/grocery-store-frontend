@@ -8,12 +8,12 @@ function HomePage() {
       <Container>
         <Row>
           <Col>
-            <Carousel>
+            <Carousel variant="dark">
               {offerImages.map((image, index) => (
-                <Carousel.Item>
+                <Carousel.Item key={index}>
                   <img
                     className="d-block w-100"
-                    style={{height : '70vh'}}
+                    style={{height : '60vh'}}
                     src={image}
                     alt={`offer ` + index}
                   />

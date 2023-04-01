@@ -3,7 +3,7 @@
   background-position: center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
-  min-height: 90vh !important;
+  min-height: 100vh !important;
 }
 
 .register-bg{
@@ -11,5 +11,25 @@
   background-position: center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
-  min-height: 90vh !important;
+  min-height: 100vh !important;
+}
+
+.admin-bg{
+  background-image: url("./assets/bg-2.jpeg");
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  min-height: 100vh !important;
+}
+
+.admin-bg1{
+  background-image: url("./assets/bg-10.jpg");
+  background-position: right !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  min-height: 100vh !important;
+}
+
+hr{
+  color: red !important;
 }

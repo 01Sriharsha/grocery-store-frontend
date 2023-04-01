@@ -1,39 +1,57 @@
 import React from "react";
 import { ProSidebarProvider } from "react-pro-sidebar";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import AddCategory from "./components/admin/pages/AddCategory";
-import AddSubCategory from "./components/admin/pages/AddSubCategory";
+import ManageCategory from "./components/admin/pages/ManageCategory";
+import ManageSubCategory from "./components/admin/pages/ManageSubCategory.js";
 import AdminDashboard from "./components/admin/pages/AdminDashboard";
 import ManageCustomers from "./components/admin/pages/ManageCustomers";
 import Login from "./components/authentication/Login";
 import Register from "./components/authentication/Register";
 import Home from "./components/home/Home";
 import Header from "./components/layout/Header";
-import AuthContext from "./context/AuthContext";
+import AuthContext, { CustomContext } from "./context/AuthContext";
+import AddProduct from "./components/admin/pages/AddProduct";
 
 export const TOAST_PROP = { position: "top-center", hideProgressBar: true };
+
+function AuthenticatedRoute({ children }) {
+  const context = CustomContext();
+  if (context?.isAuthenticated) {
+    return <Outlet />;
+  } else {
+    return <Navigate to="/" />;
+  }
+}
 
 const App = () => {
   return (
     <BrowserRouter>
-    <ProSidebarProvider>
-      <AuthContext>
-        <ToastContainer />
-        <Header />
-        <Routes>
-          <Route index path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+      <ProSidebarProvider>
+        <AuthContext>
+          <ToastContainer />
+          <Header />
+          <Routes>
+            <Route index path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-          <Route path="/admin" element={<AdminDashboard />}>
-            <Route path="add-category" element={<AddCategory />} />
-            <Route path="add-subcategory" element={<AddSubCategory />} />
-            <Route path="manage-customers" element={<ManageCustomers />} />
-          </Route>
-
-        </Routes>
-      </AuthContext>
+            <Route element={<AuthenticatedRoute />}>
+              <Route path="admin" element={<AdminDashboard />}>
+                <Route path="add-category" element={<ManageCategory />} />
+                <Route path="add-subcategory" element={<ManageSubCategory />} />
+                <Route path="manage-customers" element={<ManageCustomers />} />
+                <Route path="add-product" element={<AddProduct />} />
+              </Route>
+            </Route>
+          </Routes>
+        </AuthContext>
       </ProSidebarProvider>
     </BrowserRouter>
   );

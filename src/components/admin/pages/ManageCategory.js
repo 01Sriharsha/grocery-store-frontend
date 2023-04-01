@@ -12,7 +12,7 @@ import { TOAST_PROP } from "../../../App";
 import { AiFillDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
-const AddCategory = () => {
+const ManageCategory = () => {
   const [inputVal, setIputVal] = useState({
     name: "",
     description: "",
@@ -104,12 +104,12 @@ const AddCategory = () => {
 
   return (
     <div className="container">
-      <h2 className="text-center text-primary my-3 fw-semibold text-uppercase">
-        Add Category
-      </h2>
+      
       <Row className="m-0">
         <Col md={5} className="my-2">
           <Form onSubmit={handleSubmit}>
+            <h4 className="text-center my-3 text-primary">Add Catgeory</h4>
+            <hr />
             <Form.Group className="my-3">
               <Form.Label>Category Name</Form.Label>
               <Form.Control
@@ -139,8 +139,10 @@ const AddCategory = () => {
         </Col>
 
         {/*display all categories*/}
-        <Col md={7} className="my-3">
-          <Table>
+        <Col md={7} className="my-2">
+          <h4 className="text-center my-3 text-primary">Added Catgeories</h4>
+          <hr />
+          <Table responsive>
             <thead>
               <tr className="text-center text-secondary">
                 <th>Id</th>
@@ -188,4 +190,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default ManageCategory;

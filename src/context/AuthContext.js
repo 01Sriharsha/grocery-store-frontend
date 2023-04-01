@@ -31,14 +31,19 @@ const AuthContext = ({ children }) => {
 
   const login = (userData) => {
     toast
-      .promise(loginUser(userData), {
-        pending: "Logging in...",
-        success: "Logged in successfully!!",
-      } , TOAST_PROP)
+      .promise(
+        loginUser(userData),
+        {
+          pending: "Logging in...",
+          success: "Logged in successfully!!",
+        },
+        TOAST_PROP
+      )
       .then((res) => {
+        localStorage.setItem("user", JSON.stringify(res.data));
         setIsAuthenticated(true);
-        setUser(localStorage.setItem("user", JSON.stringify(res.data)));
-        navigate("/");
+        setUser(JSON.parse(localStorage.getItem("user")));
+        navigate(res.data === "admin" ? "/admin" : "/customer");
       })
       .catch((err) => {
         console.log(err);
@@ -49,8 +54,17 @@ const AuthContext = ({ children }) => {
       });
   };
 
+  const logout = () => {
+    console.log("logout");
+    localStorage.clear();
+    setIsAuthenticated(false);
+    setUser(null);
+    navigate("/");
+    toast.info("You are logged out!!", TOAST_PROP);
+  };
+
   return (
-    <Context.Provider value={{ isAuthenticated, user, login }}>
+    <Context.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </Context.Provider>
   );
