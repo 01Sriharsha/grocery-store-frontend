@@ -20,7 +20,7 @@ const AdminSidebar = () => {
       id="sidebar"
       style={{
         display: "flex",
-        height: "100vh",
+        height: "100%",
         zIndex: 1,
       }}
     >

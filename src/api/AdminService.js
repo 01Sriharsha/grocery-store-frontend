@@ -61,3 +61,16 @@ export const updateProduct = (productId, productData) =>
 
 export const deleteProduct = (productId) =>
   apiClient.delete(`/products/${productId}`);
+
+export const uploadProductImages = (productId, images) => {
+  const formData = new FormData();
+  for (let i = 0; i < images.length; i++) {
+    formData.append("images", images[i]);
+  }
+
+  return apiClient.post(`/products/${productId}/upload/images`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

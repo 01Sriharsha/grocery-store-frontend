@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { loginUser } from "../api/customerService";
 import { TOAST_PROP } from "../App";
@@ -10,6 +10,8 @@ export const CustomContext = () => useContext(Context);
 
 const AuthContext = ({ children }) => {
   const navigate = useNavigate();
+
+  const {pathname} = useLocation();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -26,6 +28,7 @@ const AuthContext = ({ children }) => {
     } else {
       setIsAuthenticated(true);
       setUser(JSON.parse(localStorage.getItem("user")));
+      navigate(pathname)
     }
   };
 

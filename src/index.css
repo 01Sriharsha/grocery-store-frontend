@@ -33,3 +33,7 @@
 hr{
   color: red !important;
 }
+
+.add-product-form label{
+  color: darkslateblue !important;
+}
