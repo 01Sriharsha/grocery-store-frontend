@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Logout from "../../authentication/Logout";
 import { CgProductHunt } from "react-icons/cg";
 
-const AdminSidebar = () => {
+const CategorySidebar = () => {
   const { collapsed, collapseSidebar } = useProSidebar();
 
   const [show, setShow] = useState(false);
@@ -17,12 +17,12 @@ const AdminSidebar = () => {
 
   return (
     <div
-    // className="bg-light"
+      className="bg-light border h-100"
       id="sidebar"
       style={{
         display: "flex",
-        height: "100%",
-        zIndex: 1
+        height: "100vh",
+        zIndex: 1,
       }}
     >
       <Sidebar style={{ display: "flex" }} breakPoint="xs">
@@ -40,32 +40,10 @@ const AdminSidebar = () => {
           >
             Manage Category
           </MenuItem>
-          <MenuItem
-            icon={<MdCategory />}
-            component={<Link to="/admin/add-subcategory" />}
-          >
-            Manage Sub Category
-          </MenuItem>
-          <MenuItem
-            icon={<MdOutlineManageAccounts />}
-            component={<Link to="/admin/manage-customers" />}
-          >
-            Manage Customers
-          </MenuItem>
-          <MenuItem
-            icon={<CgProductHunt />}
-            component={<Link to="/admin/add-product" />}
-          >
-            Add Product
-          </MenuItem>
-          <MenuItem icon={<BiLogOut />} onClick={toggle}>
-            <span>Logout</span>
-            <Logout show={show} toggle={toggle} />
-          </MenuItem>
         </Menu>
       </Sidebar>
     </div>
   );
 };
 
-export default AdminSidebar;
+export default CategorySidebar;

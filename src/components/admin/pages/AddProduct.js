@@ -10,6 +10,7 @@ import {
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { TOAST_PROP } from "../../../App";
+import { calculatePricePerKg } from "../../../util/format";
 
 const AddProduct = () => {
   const [inputVal, setInputVal] = useState({
@@ -74,12 +75,14 @@ const AddProduct = () => {
   };
 
   const uploadImages = (productId) => {
-    uploadProductImages(productId , images).then(res=>{
-      console.log(res);
-    }).catch(err=>{
-      console.log(err);
-    })
-  }
+    uploadProductImages(productId, images)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -94,8 +97,9 @@ const AddProduct = () => {
         TOAST_PROP
       )
       .then((res) => {
-        uploadImages(res.data.id)
+        uploadImages(res.data.id);
         handleReset();
+        document.getElementById("images").value = "";
       })
       .catch((err) => {
         console.log(err);
@@ -199,7 +203,7 @@ const AddProduct = () => {
             </Col>
 
             <Col className="my-2">
-              <Form.Label>Price</Form.Label>
+              <Form.Label>Price / Kg</Form.Label>
               <Form.Control
                 name="price"
                 type="number"
@@ -210,7 +214,7 @@ const AddProduct = () => {
             </Col>
 
             <Col className="my-2">
-              <Form.Label>Quantity</Form.Label>
+              <Form.Label>Total Quantity</Form.Label>
               <Form.Control
                 name="quantity"
                 type="number"
@@ -257,6 +261,7 @@ const AddProduct = () => {
             <Col md={inputVal.categoryId && 12} className="my-2">
               <Form.Label>Product Images</Form.Label>
               <Form.Control
+                id="images"
                 multiple
                 type="file"
                 placeholder="Enter discount"
