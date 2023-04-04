@@ -10,7 +10,6 @@ import {
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { TOAST_PROP } from "../../../App";
-import { calculatePricePerKg } from "../../../util/format";
 
 const AddProduct = () => {
   const [inputVal, setInputVal] = useState({
@@ -19,7 +18,8 @@ const AddProduct = () => {
     name: "",
     mfdDate: "",
     expDate: "",
-    price: "",
+    pricePerKg: "",
+    pricePerPiece: "",
     quantity: "",
     brand: "",
     description: "",
@@ -32,6 +32,8 @@ const AddProduct = () => {
   const [subCategories, setSubCategories] = useState([]);
 
   const [images, setImages] = useState([]);
+
+  const [price, setPrice] = useState("");
 
   //fetch all categories
   useEffect(() => {
@@ -78,6 +80,7 @@ const AddProduct = () => {
     uploadProductImages(productId, images)
       .then((res) => {
         console.log(res);
+        handleReset();
       })
       .catch((err) => {
         console.log(err);
@@ -97,8 +100,7 @@ const AddProduct = () => {
         TOAST_PROP
       )
       .then((res) => {
-        uploadImages(res.data.id);
-        handleReset();
+        uploadImages(res.data);
         document.getElementById("images").value = "";
       })
       .catch((err) => {
@@ -122,6 +124,8 @@ const AddProduct = () => {
       type: "",
     });
   };
+
+  console.log(inputVal);
 
   return (
     <Row className="m-0">
@@ -203,22 +207,56 @@ const AddProduct = () => {
             </Col>
 
             <Col className="my-2">
-              <Form.Label>Price / Kg</Form.Label>
+              <Form.Label className="d-flex gap-2">
+                <span>Price / </span>
+                <div className="d-flex justify-content-between gap-2">
+                  <Form.Check
+                    type={"radio"}
+                    name="unit"
+                    label={"Kg"}
+                    value={"Kg"}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                  <Form.Check
+                    type={"radio"}
+                    name="unit"
+                    label={"Piece"}
+                    value={"Piece"}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+              </Form.Label>
               <Form.Control
-                name="price"
+                name={price === "Kg" ? "pricePerKg" : "pricePerPiece"}
                 type="number"
                 placeholder="Enter product price in ₹"
-                value={inputVal.price}
-                onChange={handleChange}
+                value={
+                  price === "Kg" ? inputVal.pricePerKg : inputVal.pricePerPiece
+                }
+                onChange={(e) => {
+                  price === "Kg"
+                    ? setInputVal({
+                        ...inputVal,
+                        pricePerPiece: "",
+                        pricePerKg: e.target.value,
+                      })
+                    : setInputVal({
+                        ...inputVal,
+                        pricePerPiece: e.target.value,
+                        pricePerKg: '',
+                      });
+                }}
               />
             </Col>
 
             <Col className="my-2">
-              <Form.Label>Total Quantity</Form.Label>
+              <Form.Label>
+                Total {price === "Kg" ? "Quantity" : "Count"}
+              </Form.Label>
               <Form.Control
                 name="quantity"
                 type="number"
-                placeholder="Enter product quantity in kg"
+                placeholder={`Enter product quantity in ` + price}
                 value={inputVal.quantity}
                 onChange={handleChange}
               />

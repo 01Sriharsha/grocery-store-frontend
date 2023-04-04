@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useLocation } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { IoCartSharp } from "react-icons/io5";
 import { CustomContext } from "../../context/AuthContext";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
@@ -37,9 +37,14 @@ const Header = () => {
             <Nav.Link as={Link} to="/">
               Contact Us
             </Nav.Link>
-            <Nav.Link as={Link} to="/admin">
-             Dashboard
+            <Nav.Link as={Link} to="/products">
+              Products
             </Nav.Link>
+            {context.isAuthenticated && (
+              <Nav.Link as={Link} to="/admin">
+                Dashboard
+              </Nav.Link>
+            )}
           </Nav>
 
           <Nav>
@@ -50,7 +55,7 @@ const Header = () => {
                 className="text-primary"
               />
             </Nav.Link>
-            {context?.isAuthenticated ? (
+            {context.isAuthenticated ? (
               <>
                 <Nav.Link
                   role="button"

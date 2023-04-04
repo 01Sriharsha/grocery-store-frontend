@@ -74,3 +74,6 @@ export const uploadProductImages = (productId, images) => {
     },
   });
 };
+
+export const downloadProductImage = (productId) =>
+  apiClient.get(`/products/${productId}/download/images`);

@@ -37,3 +37,23 @@ hr{
 .add-product-form label{
   color: darkslateblue !important;
 }
+
+
+.sidebar{
+  height: 90vh !important;
+  width: 20rem !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.close-sidebar{
+  width: 5rem !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.disable{
+  display: none !important ;
+}
+
+.active{
+  display : block !important
+}
