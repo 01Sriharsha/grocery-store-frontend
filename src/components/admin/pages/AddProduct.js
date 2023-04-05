@@ -18,8 +18,7 @@ const AddProduct = () => {
     name: "",
     mfdDate: "",
     expDate: "",
-    pricePerKg: "",
-    pricePerPiece: "",
+    price: "",
     quantity: "",
     brand: "",
     description: "",
@@ -90,9 +89,16 @@ const AddProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
+    const backendPrice =
+      price === "Kg"
+        ? { pricePerKg: inputVal.price }
+        : { pricePerPiece: inputVal.price };
     toast
       .promise(
-        createProduct(inputVal.categoryId, inputVal.subCategoryId, inputVal),
+        createProduct(inputVal.categoryId, inputVal.subCategoryId, {
+          ...inputVal,
+          ...backendPrice,
+        }),
         {
           pending: "Adding....",
           success: "Product added successfully!!",
@@ -227,25 +233,11 @@ const AddProduct = () => {
                 </div>
               </Form.Label>
               <Form.Control
-                name={price === "Kg" ? "pricePerKg" : "pricePerPiece"}
+                name="price"
                 type="number"
                 placeholder="Enter product price in ₹"
-                value={
-                  price === "Kg" ? inputVal.pricePerKg : inputVal.pricePerPiece
-                }
-                onChange={(e) => {
-                  price === "Kg"
-                    ? setInputVal({
-                        ...inputVal,
-                        pricePerPiece: "",
-                        pricePerKg: e.target.value,
-                      })
-                    : setInputVal({
-                        ...inputVal,
-                        pricePerPiece: e.target.value,
-                        pricePerKg: '',
-                      });
-                }}
+                value={inputVal.price}
+                onChange={handleChange}
               />
             </Col>
 

@@ -5,8 +5,11 @@ import DefaultImage from "../../../assets/bg-1.jpg";
 import { AiFillDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { TOAST_PROP } from "../../../App";
+import { CustomContext } from "../../../context/AuthContext";
 
-const ProductCard = ({ product , handleDelete }) => {
+const ProductCard = ({ product, handleDelete }) => {
+  const context = CustomContext();
+
   const [images, setImages] = useState([]);
 
   useEffect(() => {
@@ -30,16 +33,23 @@ const ProductCard = ({ product , handleDelete }) => {
       </Carousel>
 
       <Card.Body>
-        <Card.Title>{product.name}</Card.Title>
-        <Card.Text>Price: ${product.price}</Card.Text>
+        <Card.Title className="text-capitalize">{product.name}</Card.Title>
+        <Card.Text>
+          <span>Price: ₹{product.pricePerKg || product.pricePerPiece}</span>
+          <span>{product.pricePerKg ? " / Kg " : " / Piece "}</span>
+        </Card.Text>
         <div className="d-flex justify-content-between align-items-center">
           <Button variant="primary">Add to Cart</Button>
-          <AiFillDelete
-            size="1.3rem"
-            color="red"
-            role="button"
-            onClick={() => handleDelete(product.id)}
-          />
+          {context.user === "admin" && (
+            <AiFillDelete
+              size="1.3rem"
+              color="red"
+              role="button"
+              onClick={() => {
+                handleDelete(product.id);
+              }}
+            />
+          )}
         </div>
       </Card.Body>
     </Card>
