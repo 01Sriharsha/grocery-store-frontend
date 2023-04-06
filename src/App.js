@@ -19,6 +19,7 @@ import Header from "./components/layout/Header";
 import AuthContext, { CustomContext } from "./context/AuthContext";
 import AddProduct from "./components/admin/pages/AddProduct";
 import ProductGallery from "./components/product/pages/ProductGallery";
+import ProductContext from "./context/ProductContext";
 
 export const TOAST_PROP = { position: "top-center", hideProgressBar: true };
 
@@ -36,23 +37,31 @@ const App = () => {
     <BrowserRouter>
       <ProSidebarProvider>
         <AuthContext>
-          <ToastContainer />
-          <Header />
-          <Routes>
-            <Route index path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/products" element={<ProductGallery />} />
+          <ProductContext>
+            <ToastContainer />
+            <Header />
+            <Routes>
+              <Route index path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/products" element={<ProductGallery />} />
 
-            <Route element={<AuthenticatedRoute />}>
-              <Route path="admin" element={<AdminDashboard />}>
-                <Route path="add-category" element={<ManageCategory />} />
-                <Route path="add-subcategory" element={<ManageSubCategory />} />
-                <Route path="manage-customers" element={<ManageCustomers />} />
-                <Route path="add-product" element={<AddProduct />} />
+              <Route element={<AuthenticatedRoute />}>
+                <Route path="admin" element={<AdminDashboard />}>
+                  <Route path="add-category" element={<ManageCategory />} />
+                  <Route
+                    path="add-subcategory"
+                    element={<ManageSubCategory />}
+                  />
+                  <Route
+                    path="manage-customers"
+                    element={<ManageCustomers />}
+                  />
+                  <Route path="add-product" element={<AddProduct />} />
+                </Route>
               </Route>
-            </Route>
-          </Routes>
+            </Routes>
+          </ProductContext>
         </AuthContext>
       </ProSidebarProvider>
     </BrowserRouter>

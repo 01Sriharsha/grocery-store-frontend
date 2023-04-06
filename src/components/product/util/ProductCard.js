@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Carousel } from "react-bootstrap";
-import { deleteProduct, downloadProductImage } from "../../../api/AdminService";
+import { downloadProductImage } from "../../../api/AdminService";
 import DefaultImage from "../../../assets/bg-1.jpg";
 import { AiFillDelete } from "react-icons/ai";
-import { toast } from "react-toastify";
-import { TOAST_PROP } from "../../../App";
 import { CustomContext } from "../../../context/AuthContext";
+import { ProductContextApi } from "../../../context/ProductContext";
 
-const ProductCard = ({ product, handleDelete }) => {
+const ProductCard = ({ product, current }) => {
+  console.log(current);
   const context = CustomContext();
+
+  const productContext = ProductContextApi();
 
   const [images, setImages] = useState([]);
 
@@ -39,15 +41,21 @@ const ProductCard = ({ product, handleDelete }) => {
           <span>{product.pricePerKg ? " / Kg " : " / Piece "}</span>
         </Card.Text>
         <div className="d-flex justify-content-between align-items-center">
-          <Button variant="primary">Add to Cart</Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              productContext.setItemCount(productContext.itemCount + 1);
+            }}
+          >
+            Add to Cart
+          </Button>
+
           {context.user === "admin" && (
             <AiFillDelete
               size="1.3rem"
               color="red"
               role="button"
-              onClick={() => {
-                handleDelete(product.id);
-              }}
+              onClick={() => productContext?.handleDelete(product.id)}
             />
           )}
         </div>

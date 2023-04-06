@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Accordion, Card } from "react-bootstrap";
+import { Accordion, Button, Card } from "react-bootstrap";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -9,8 +9,11 @@ import {
   getAllProductsBySubCategory,
   getAllSubCategoriesByCategory,
 } from "../../../api/AdminService";
+import { ProductContextApi } from "../../../context/ProductContext";
 
-export default function FilterSidebar({ setProducts }){
+export default function FilterSidebar() {
+  const productContext = ProductContextApi();
+
   const [categories, setcategories] = useState([]);
 
   const [open, setOpen] = useState(false);
@@ -38,15 +41,26 @@ export default function FilterSidebar({ setProducts }){
         />
       </Card.Header>
       <Card.Body>
+        {open && (
+          <div
+            className="d-flex flex-column w-100 align-items-center fw-bold"
+            style={{ cursor: "pointer" }}
+            onClick={toggle}
+          >
+            <p>F</p>
+            <p>I</p>
+            <p>L</p>
+            <p>T</p>
+            <p>E</p>
+            <p>R</p>
+          </div>
+        )}
+
         {categories.map((category, index) => (
           <div
             key={index}
             className="d-flex align-items-center justify-content-center gap-2 mt-1"
           >
-            <Link to="/">
-              {open && <BiCategoryAlt size="1.3rem" color="black" />}
-            </Link>
-
             {!open && (
               <Accordion defaultActiveKey={""} className="w-100">
                 <Accordion.Item eventKey={index}>
@@ -54,10 +68,7 @@ export default function FilterSidebar({ setProducts }){
                     <span className="text-capitalize">{category.name}</span>
                   </Accordion.Header>
                   <Accordion.Body>
-                    <SubCategory
-                      categoryId={category.id}
-                      setProducts={setProducts}
-                    />
+                    <SubCategory categoryId={category.id} />
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
@@ -66,12 +77,25 @@ export default function FilterSidebar({ setProducts }){
         ))}
       </Card.Body>
 
-      <Card.Footer></Card.Footer>
+      <Card.Footer className="d-flex justify-content-end">
+        {!open && (
+          <Button
+            size="sm"
+            className="text-end m-0"
+            // style={{ cursor: "pointer", textDecoration: "underline" }}
+            onClick={() => productContext.setReset(true)}
+          >
+            Reset All Filters
+          </Button>
+        )}
+      </Card.Footer>
     </Card>
   );
-};
+}
 
-function SubCategory({ categoryId, setProducts }) {
+function SubCategory({ categoryId }) {
+  const productContext = ProductContextApi();
+
   const [subCategories, setSubcategories] = useState([]);
 
   const [subCategoryId, setSubcategoryId] = useState("");
@@ -86,7 +110,7 @@ function SubCategory({ categoryId, setProducts }) {
   useEffect(() => {
     subCategoryId &&
       getAllProductsBySubCategory(subCategoryId)
-        .then((res) => setProducts(res.data))
+        .then((res) => productContext.setProducts(res.data))
         .catch((err) => console.log(err));
   }, [subCategoryId]);
 
@@ -96,7 +120,7 @@ function SubCategory({ categoryId, setProducts }) {
         <p
           key={subcategory.id}
           className="text-capitalize"
-          style={{cursor: "pointer" }}
+          style={{ cursor: "pointer" }}
           onClick={() => setSubcategoryId(subcategory.id)}
         >
           {subcategory.name}

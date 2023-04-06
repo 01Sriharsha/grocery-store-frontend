@@ -1,15 +1,19 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoCartSharp } from "react-icons/io5";
 import { CustomContext } from "../../context/AuthContext";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { useState } from "react";
 import Logout from "../authentication/Logout";
+import { Badge } from "react-bootstrap";
+import { ProductContextApi } from "../../context/ProductContext";
 
 const Header = () => {
   const context = CustomContext();
+
+  const productContext = ProductContextApi();
 
   const [show, setShow] = useState(false);
 
@@ -51,9 +55,12 @@ const Header = () => {
             <Nav.Link as={Link} to="/cart">
               <IoCartSharp
                 role="button"
-                size={"1.5rem"}
+                size={"1.8rem"}
                 className="text-primary"
               />
+              <Badge pill bg="primary" size="sm">
+                {productContext.itemCount}
+              </Badge>
             </Nav.Link>
             {context.isAuthenticated ? (
               <>
