@@ -20,6 +20,7 @@ import AuthContext, { CustomContext } from "./context/AuthContext";
 import AddProduct from "./components/admin/pages/AddProduct";
 import ProductGallery from "./components/product/pages/ProductGallery";
 import ProductContext from "./context/ProductContext";
+import Cart from "./components/product/pages/Cart";
 
 export const TOAST_PROP = { position: "top-center", hideProgressBar: true };
 
@@ -45,6 +46,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/products" element={<ProductGallery />} />
+              <Route path="/cart" element={<Cart />} />
 
               <Route element={<AuthenticatedRoute />}>
                 <Route path="admin" element={<AdminDashboard />}>

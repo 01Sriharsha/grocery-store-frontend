@@ -13,8 +13,6 @@ export default function ProductContext({ children }) {
 
   const [reset, setReset] = useState(false);
 
-  const [itemCount, setItemCount] = useState(0);
-
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
@@ -24,7 +22,7 @@ export default function ProductContext({ children }) {
     return () => setReset(false);
   }, [reset]);
 
-  function addOrUpdateCart(product) {
+  const IncrementItemQuantity = (product) => {
     const itemExisted = cartItems.find((item) => item.id == product.id);
     if (!itemExisted) {
       setCartItems([...cartItems, { ...product, quantity: 1 }]);
@@ -38,7 +36,29 @@ export default function ProductContext({ children }) {
         })
       );
     }
-  }
+  };
+
+  const decrementItemQuantity = (product) => {
+    setCartItems(
+      cartItems.map((item) => {
+        if (item.quantity > 0 && item.id == product.id) {
+          return { ...product, quantity: item.quantity - 1 };
+        }
+        return item;
+      })
+    );
+  };
+
+  const removeCartItem = (id) => {
+    console.log(id);
+    const newArr = cartItems.filter((item) => {
+      console.log(item);
+      return item.id !== id;
+    });
+    setCartItems(newArr);
+  };
+
+  const clearCart = () => setCartItems([]);
 
   const handleDelete = (id) => {
     toast
@@ -67,7 +87,11 @@ export default function ProductContext({ children }) {
         setProducts,
         handleDelete,
         setReset,
-        addOrUpdateCart,
+        IncrementItemQuantity,
+        cartItems,
+        decrementItemQuantity,
+        removeCartItem,
+        clearCart,
       }}
     >
       {children}

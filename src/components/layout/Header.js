@@ -13,11 +13,17 @@ import { ProductContextApi } from "../../context/ProductContext";
 const Header = () => {
   const context = CustomContext();
 
-  const productContext = ProductContextApi();
+  const { cartItems } = ProductContextApi();
 
   const [show, setShow] = useState(false);
 
   const toggle = () => setShow(!show);
+
+  const totalQuantity = cartItems.reduce((quantity, item) => {
+    // debugger;
+    console.log(quantity);
+    return item.quantity + quantity;
+  }, 0);
 
   return (
     <Navbar bg="light" expand="md" className="shadow" sticky="top">
@@ -59,7 +65,7 @@ const Header = () => {
                 className="text-primary"
               />
               <Badge pill bg="primary" size="sm">
-                {productContext.itemCount}
+                {totalQuantity}
               </Badge>
             </Nav.Link>
             {context.isAuthenticated ? (

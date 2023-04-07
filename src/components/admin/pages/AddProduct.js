@@ -19,7 +19,7 @@ const AddProduct = () => {
     mfdDate: "",
     expDate: "",
     price: "",
-    quantity: "",
+    totalQuantity: "",
     brand: "",
     description: "",
     discount: "",
@@ -61,7 +61,7 @@ const AddProduct = () => {
       inputVal.subCategoryId.length === 0 ||
       inputVal.name.length === 0 ||
       inputVal.brand.length === 0 ||
-      inputVal.quantity.length === 0 ||
+      inputVal.totalQuantity.length === 0 ||
       inputVal.description.length === 0 ||
       inputVal.type.length === 0 ||
       inputVal.mfdDate.length === 0 ||
@@ -123,7 +123,7 @@ const AddProduct = () => {
       mfdDate: "",
       expDate: "",
       price: "",
-      quantity: "",
+      totalQuantity: "",
       brand: "",
       description: "",
       discount: "",
@@ -246,10 +246,10 @@ const AddProduct = () => {
                 Total {price === "Kg" ? "Quantity" : "Count"}
               </Form.Label>
               <Form.Control
-                name="quantity"
+                name="totalQuantity"
                 type="number"
-                placeholder={`Enter product quantity in ` + price}
-                value={inputVal.quantity}
+                placeholder={`Enter product total quantity in ` + price}
+                value={inputVal.totalQuantity}
                 onChange={handleChange}
               />
             </Col>
