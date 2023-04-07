@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Accordion, Button, Card } from "react-bootstrap";
 import { AiOutlineMenu } from "react-icons/ai";
-import { BiCategoryAlt } from "react-icons/bi";
-import { Link } from "react-router-dom";
 import {
   getAllCategories,
   getAllProductsBySubCategory,
@@ -12,7 +10,7 @@ import {
 import { ProductContextApi } from "../../../context/ProductContext";
 
 export default function FilterSidebar() {
-  const productContext = ProductContextApi();
+  const { setReset } = ProductContextApi();
 
   const [categories, setcategories] = useState([]);
 
@@ -83,7 +81,7 @@ export default function FilterSidebar() {
             size="sm"
             className="text-end m-0"
             // style={{ cursor: "pointer", textDecoration: "underline" }}
-            onClick={() => productContext.setReset(true)}
+            onClick={() => setReset(true)}
           >
             Reset All Filters
           </Button>
@@ -94,7 +92,7 @@ export default function FilterSidebar() {
 }
 
 function SubCategory({ categoryId }) {
-  const productContext = ProductContextApi();
+  const { setProducts } = ProductContextApi();
 
   const [subCategories, setSubcategories] = useState([]);
 
@@ -110,7 +108,7 @@ function SubCategory({ categoryId }) {
   useEffect(() => {
     subCategoryId &&
       getAllProductsBySubCategory(subCategoryId)
-        .then((res) => productContext.setProducts(res.data))
+        .then((res) => setProducts(res.data))
         .catch((err) => console.log(err));
   }, [subCategoryId]);
 

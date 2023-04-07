@@ -13,7 +13,9 @@ export default function ProductContext({ children }) {
 
   const [reset, setReset] = useState(false);
 
-  const [itemCount , setItemCount] = useState(0);
+  const [itemCount, setItemCount] = useState(0);
+
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     getAllProducts()
@@ -21,6 +23,22 @@ export default function ProductContext({ children }) {
       .catch((err) => console.log(err));
     return () => setReset(false);
   }, [reset]);
+
+  function addOrUpdateCart(product) {
+    const itemExisted = cartItems.find((item) => item.id == product.id);
+    if (!itemExisted) {
+      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    } else {
+      setCartItems(
+        cartItems.map((item) => {
+          if (item.id == product.id) {
+            return { ...product, quantity: item.quantity + 1 };
+          }
+          return item;
+        })
+      );
+    }
+  }
 
   const handleDelete = (id) => {
     toast
@@ -43,7 +61,15 @@ export default function ProductContext({ children }) {
   };
 
   return (
-    <Context.Provider value={{ products, setProducts, handleDelete, setReset , itemCount , setItemCount }}>
+    <Context.Provider
+      value={{
+        products,
+        setProducts,
+        handleDelete,
+        setReset,
+        addOrUpdateCart,
+      }}
+    >
       {children}
     </Context.Provider>
   );
