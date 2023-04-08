@@ -56,7 +56,7 @@ const ProductCard = ({ product }) => {
             <div className="d-flex justify-content-between align-items-center">
               <Button
                 variant="primary"
-                onClick={() => IncrementItemQuantity(product)}
+                onClick={() => IncrementItemQuantity({...product , quantity : 0})}
               >
                 Add to Cart
               </Button>
@@ -91,8 +91,7 @@ const ProductCard = ({ product }) => {
                   </Card.Title>
                   <Card.Text>
                     {product.quantity} X{" ₹"}
-                    {product.pricePerKg || product.pricePerPiece}
-                    <span>{product.pricePerKg ? " / Kg " : " / Piece "}</span>
+                    {product.price}
                   </Card.Text>
                   <div className="d-flex justify-content-between align-items-center w-100">
                     <span>
@@ -124,13 +123,12 @@ const ProductCard = ({ product }) => {
                 role="button"
                 size="1.5rem"
                 color="red"
-                onClick={() => removeCartItem(product.id)}
+                onClick={() => removeCartItem(product.cartId)}
               />
               <div className="fw-bold">
                 <span>Subtotal : ₹</span>
                 <span>
-                  {product.quantity *
-                    (product.pricePerKg || product.pricePerPiece)}
+                  {product.quantity * product.price}
                 </span>
               </div>
             </div>

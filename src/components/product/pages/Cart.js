@@ -9,7 +9,7 @@ const Cart = () => {
   const flexStyle = "d-flex justify-content-between align-items-center";
 
   const subTotals = cartItems.map((item) => {
-    return item.quantity * (item.pricePerKg || item.pricePerPiece);
+    return item.quantity * (item.price);
   });
 
   const totalPrice = subTotals.reduce((acc, curr) => {

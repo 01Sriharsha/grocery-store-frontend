@@ -46,7 +46,7 @@ const AuthContext = ({ children }) => {
         localStorage.setItem("user", JSON.stringify(res.data));
         setIsAuthenticated(true);
         setUser(JSON.parse(localStorage.getItem("user")));
-        navigate(res.data === "admin" ? "/admin" : "/customer");
+        navigate(res.data === "admin" ? "/admin" : "/");
       })
       .catch((err) => {
         console.log(err);

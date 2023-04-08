@@ -30,6 +30,14 @@
   min-height: 100vh !important;
 }
 
+.account-bg{
+  background-image: url("./assets/bg-7.jpg");
+  background-position: right !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  min-height: 90vh !important;
+}
+
 hr{
   color: red !important;
 }

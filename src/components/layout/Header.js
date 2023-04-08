@@ -9,6 +9,7 @@ import { useState } from "react";
 import Logout from "../authentication/Logout";
 import { Badge } from "react-bootstrap";
 import { ProductContextApi } from "../../context/ProductContext";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Header = () => {
   const context = CustomContext();
@@ -21,7 +22,6 @@ const Header = () => {
 
   const totalQuantity = cartItems.reduce((quantity, item) => {
     // debugger;
-    console.log(quantity);
     return item.quantity + quantity;
   }, 0);
 
@@ -50,7 +50,7 @@ const Header = () => {
             <Nav.Link as={Link} to="/products">
               Products
             </Nav.Link>
-            {context.isAuthenticated && (
+            {(context.isAuthenticated && context.user==="admin") && (
               <Nav.Link as={Link} to="/admin">
                 Dashboard
               </Nav.Link>
@@ -70,16 +70,24 @@ const Header = () => {
             </Nav.Link>
             {context.isAuthenticated ? (
               <>
-                <Nav.Link
-                  role="button"
-                  as="span"
-                  onClick={toggle}
-                  className="d-flex justify-content-center align-items-center"
-                >
-                  <span>Logout</span>
-                  <BiLogOut />
-                </Nav.Link>
-                <Logout show={show} toggle={toggle} />
+                {context.user === "admin" ? (
+                  <>
+                    <Nav.Link
+                      role="button"
+                      as="span"
+                      onClick={toggle}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <span>Logout</span>
+                      <BiLogOut />
+                    </Nav.Link>
+                    <Logout show={show} toggle={toggle} />
+                  </>
+                ) : (
+                  <Nav.Link as="div">
+                    <ProfileDropdown />
+                  </Nav.Link>
+                )}
               </>
             ) : (
               <Nav.Link
