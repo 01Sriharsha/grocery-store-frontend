@@ -35,7 +35,15 @@
   background-position: right !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
-  min-height: 90vh !important;
+  min-height: 100vh !important;
+}
+
+.cart-bg{
+  background-image: url("./assets/cart-bg1.jpg");
+  background-position: right !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  min-height: 100vh !important;
 }
 
 hr{

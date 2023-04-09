@@ -22,6 +22,9 @@ import ProductGallery from "./components/product/pages/ProductGallery";
 import ProductContext from "./context/ProductContext";
 import Cart from "./components/product/pages/Cart";
 import MyAccount from "./components/customer/pages/MyAccount";
+import MyOrders from "./components/customer/pages/MyOrders";
+import CustomerDashboard from "./components/customer/pages/CustomerDashboard";
+import ProductPage from "./components/product/pages/ProductPage";
 
 export const TOAST_PROP = { position: "top-center", hideProgressBar: true };
 
@@ -47,6 +50,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/products" element={<ProductGallery />} />
+              <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<Cart />} />
 
               <Route element={<AuthenticatedRoute />}>
@@ -65,9 +69,9 @@ const App = () => {
                 </Route>
 
                 {/**Customer */}
-                <Route path="/customer">
+                <Route path="/customer" element={<CustomerDashboard />}>
                   <Route path="account" element={<MyAccount />} />
-                  <Route path="orders" element={<MyAccount />} />
+                  <Route path="orders" element={<MyOrders />} />
                 </Route>
               </Route>
             </Routes>

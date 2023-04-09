@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Button, Card, Carousel, Col, Row } from "react-bootstrap";
+import { Button, Card, Carousel, Col, Row } from "react-bootstrap";
 import { downloadProductImage } from "../../../api/AdminService";
 import DefaultImage from "../../../assets/bg-1.jpg";
 import {
@@ -9,12 +9,14 @@ import {
 } from "react-icons/ai";
 import { CustomContext } from "../../../context/AuthContext";
 import { ProductContextApi } from "../../../context/ProductContext";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const { pathname } = useLocation();
 
   const context = CustomContext();
+
+  const navigate = useNavigate();
 
   const {
     handleDelete,
@@ -38,25 +40,35 @@ const ProductCard = ({ product }) => {
   return (
     <>
       {pathname !== "/cart" ? (
-        <Card className="border my-2">
+        <Card className="border my-2 shadow">
           <Carousel controls={images.length > 1} variant="dark" interval={700}>
             {images.map((image, index) => (
               <Carousel.Item key={index}>
-                <Card.Img variant="top" src={image} height={300} />
+                <Card.Img variant="top" src={image} height={210} />
               </Carousel.Item>
             ))}
           </Carousel>
 
           <Card.Body>
-            <Card.Title className="text-capitalize">{product.name}</Card.Title>
-            <Card.Text>
-              <span>Price: ₹{product.pricePerKg || product.pricePerPiece}</span>
-              <span>{product.pricePerKg ? " / Kg " : " / Piece "}</span>
-            </Card.Text>
-            <div className="d-flex justify-content-between align-items-center">
+            <Link
+              to={`/product/${product.id}`}
+              className="text-decoration-none text-capitalize"
+              style={{ color: "black" }}
+            >
+              <Card.Title>{product.name}</Card.Title>
+              <Card.Text>
+                <span>
+                  Price: ₹{product.pricePerKg || product.pricePerPiece}
+                </span>
+                <span>{product.pricePerKg ? " / Kg " : " / Piece "}</span>
+              </Card.Text>
+            </Link>
+            <div className="d-flex justify-content-between align-items-center my-2">
               <Button
                 variant="primary"
-                onClick={() => IncrementItemQuantity({...product , quantity : 0})}
+                onClick={() =>
+                  IncrementItemQuantity({ ...product, quantity: 0 })
+                }
               >
                 Add to Cart
               </Button>
@@ -72,7 +84,7 @@ const ProductCard = ({ product }) => {
           </Card.Body>
         </Card>
       ) : (
-        <Card className="my-2 d-flex">
+        <Card className="my-2 d-flex shadow">
           <Card.Body className="d-flex text-capitalize">
             <Row className="w-100">
               <Col md={3} className="d-flex justify-content-center">
@@ -127,9 +139,7 @@ const ProductCard = ({ product }) => {
               />
               <div className="fw-bold">
                 <span>Subtotal : ₹</span>
-                <span>
-                  {product.quantity * product.price}
-                </span>
+                <span>{product.quantity * product.price}</span>
               </div>
             </div>
           </Card.Footer>

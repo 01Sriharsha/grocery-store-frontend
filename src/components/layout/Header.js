@@ -4,24 +4,17 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import { IoCartSharp } from "react-icons/io5";
 import { CustomContext } from "../../context/AuthContext";
-import { BiLogIn, BiLogOut } from "react-icons/bi";
-import { useState } from "react";
-import Logout from "../authentication/Logout";
+import { BiLogIn } from "react-icons/bi";
 import { Badge } from "react-bootstrap";
 import { ProductContextApi } from "../../context/ProductContext";
-import ProfileDropdown from "./ProfileDropdown";
+import { CgProfile } from "react-icons/cg";
 
 const Header = () => {
   const context = CustomContext();
 
   const { cartItems } = ProductContextApi();
 
-  const [show, setShow] = useState(false);
-
-  const toggle = () => setShow(!show);
-
   const totalQuantity = cartItems.reduce((quantity, item) => {
-    // debugger;
     return item.quantity + quantity;
   }, 0);
 
@@ -50,11 +43,6 @@ const Header = () => {
             <Nav.Link as={Link} to="/products">
               Products
             </Nav.Link>
-            {(context.isAuthenticated && context.user==="admin") && (
-              <Nav.Link as={Link} to="/admin">
-                Dashboard
-              </Nav.Link>
-            )}
           </Nav>
 
           <Nav>
@@ -69,26 +57,16 @@ const Header = () => {
               </Badge>
             </Nav.Link>
             {context.isAuthenticated ? (
-              <>
-                {context.user === "admin" ? (
-                  <>
-                    <Nav.Link
-                      role="button"
-                      as="span"
-                      onClick={toggle}
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      <span>Logout</span>
-                      <BiLogOut />
-                    </Nav.Link>
-                    <Logout show={show} toggle={toggle} />
-                  </>
-                ) : (
-                  <Nav.Link as="div">
-                    <ProfileDropdown />
-                  </Nav.Link>
-                )}
-              </>
+              <Nav.Link
+                as={Link}
+                to={context.user === "admin" ? "/admin" : "/customer"}
+                className="d-flex justify-content-center align-items-center gap-1"
+              >
+                <CgProfile size="1.5rem" className="text-primary" />
+                <span className="text-capitalize">
+                  {context.user.name || context.user}
+                </span>
+              </Nav.Link>
             ) : (
               <Nav.Link
                 as={Link}

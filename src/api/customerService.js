@@ -14,8 +14,8 @@ export const createCustomer = (customerData) =>
 
 export const getAllCustomers = () => apiClient.get("/customers");
 
-export const updateCustomer = (customerId , customerData) =>
-  apiClient.put(`/customers/${customerId}` ,customerData );
+export const updateCustomer = (customerId, customerData) =>
+  apiClient.put(`/customers/${customerId}`, customerData);
 
 export const deleteCustomer = (customerId) =>
   apiClient.delete(`/customers/${customerId}`);
@@ -38,3 +38,12 @@ export const deleteAllCartItemsOfCustomer = (customerId) =>
 
 export const deleteCartItem = (cartItemId) =>
   apiClient.delete(`/cart/${cartItemId}`);
+
+//Order Api's
+export const createOrder = (customerId , orderData) =>
+  apiClient.post(`/customers/${customerId}/orders`,orderData);
+
+export const getAllOrders = () => apiClient.get("/orders");
+
+export const getAllOrdersByCustomer = (customerId) =>
+  apiClient.get(`/customers/${customerId}/orders`);

@@ -95,7 +95,6 @@ export default function ProductContext({ children }) {
         deleteAllCartItemsOfCustomer(context.user?.id),
         {
           pending: "Clearing....",
-          success: "Cart cleared successfully!!",
           error: "Failed to clear cart!!",
         },
         TOAST_PROP
