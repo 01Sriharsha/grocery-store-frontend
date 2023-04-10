@@ -9,6 +9,7 @@ import {
   ListGroup,
   Carousel,
   CardImg,
+  Badge,
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
@@ -18,6 +19,7 @@ import {
 
 const ProductPage = () => {
   const [feedback, setFeedback] = useState("");
+  
   const [feedbacks, setFeedbacks] = useState([]);
 
   const [product, setProduct] = useState({});
@@ -49,23 +51,41 @@ const ProductPage = () => {
           <Carousel controls={images.length > 1} variant="dark">
             {images.map((image, index) => (
               <Carousel.Item key={index}>
-                <CardImg src={image} height={300} style={{objectFit : 'contain'}} />
+                <CardImg
+                  src={image}
+                  height={300}
+                  style={{ objectFit: "contain" }}
+                />
               </Carousel.Item>
             ))}
           </Carousel>
         </Col>
         <Col md={6} className="">
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
-          <h4>
-            <span>₹{product.pricePerKg || product.pricePerPiece}</span>
-            <span>{product.pricePerKg ? " / Kg" : " / Piece"}</span>
-          </h4>
-          <Button variant="primary" className="my-3">Add to Cart</Button>
+          <h5 className="text-capitalize fw-semibold">{product.brand}</h5>
+          <h2 className="my-3 text-primary">{product.name}</h2>
+          <div className="d-flex align-items-center gap-2">
+            <span className="fs-5">
+              MRP : ₹{product.pricePerKg || product.pricePerPiece}
+            </span>
+            <span className="fs-5">
+              {product.pricePerKg ? " / Kg" : " / Piece"}
+            </span>
+            <Badge pill className="bg-success" style={{ fontSize: "0.7rem" }}>
+              {product.discount}% Off
+            </Badge>
+          </div>
+          <Button variant="primary" className="my-3">
+            Add to Cart
+          </Button>
+          <hr />
+          <div>
+            <h4 className="text-primary">Description : </h4>
+            <p>{product.description}</p>
+          </div>
         </Col>
       </Row>
       <hr />
-      <h3>Customer Feedback</h3>
+      <h3 className="text-primary">Customer Feedback</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="feedbackForm">
           <Form.Control
