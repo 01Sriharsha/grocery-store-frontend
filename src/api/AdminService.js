@@ -77,3 +77,7 @@ export const uploadProductImages = (productId, images) => {
 
 export const downloadProductImage = (productId) =>
   apiClient.get(`/products/${productId}/download/images`);
+
+//Order Api's
+export const updateOrderByAdmin = (orderId , orderData) =>
+  apiClient.put(`/orders/${orderId}/admin`,orderData);

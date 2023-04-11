@@ -25,6 +25,7 @@ import MyAccount from "./components/customer/pages/MyAccount";
 import MyOrders from "./components/customer/pages/MyOrders";
 import CustomerDashboard from "./components/customer/pages/CustomerDashboard";
 import ProductPage from "./components/product/pages/ProductPage";
+import ManageOrders from "./components/admin/pages/ManageOrders";
 
 export const TOAST_PROP = { position: "top-center", hideProgressBar: true };
 
@@ -66,6 +67,7 @@ const App = () => {
                     element={<ManageCustomers />}
                   />
                   <Route path="add-product" element={<AddProduct />} />
+                  <Route path="manage-orders" element={<ManageOrders />} />
                 </Route>
 
                 {/**Customer */}

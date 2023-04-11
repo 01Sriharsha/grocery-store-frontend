@@ -58,6 +58,12 @@ const AdminSidebar = () => {
           >
             Add Product
           </MenuItem>
+          <MenuItem
+            icon={<CgProductHunt />}
+            component={<Link to="/admin/manage-orders" />}
+          >
+            Manage Orders
+          </MenuItem>
           <MenuItem icon={<BiLogOut />} onClick={toggle}>
             <span>Logout</span>
             <Logout show={show} toggle={toggle} />
