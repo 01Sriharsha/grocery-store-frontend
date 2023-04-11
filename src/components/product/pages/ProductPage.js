@@ -3,30 +3,32 @@ import {
   Container,
   Row,
   Col,
-  Image,
   Button,
-  Form,
-  ListGroup,
   Carousel,
   CardImg,
   Badge,
+  Collapse,
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
   downloadProductImage,
   getSingleProduct,
 } from "../../../api/AdminService";
+import { ProductContextApi } from "../../../context/ProductContext";
+import Feedback from "../util/Feedback";
 
 const ProductPage = () => {
-  const [feedback, setFeedback] = useState("");
-  
-  const [feedbacks, setFeedbacks] = useState([]);
+  const { IncrementItemQuantity } = ProductContextApi();
+
+  const { slug } = useParams();
 
   const [product, setProduct] = useState({});
 
   const [images, setImages] = useState([]);
 
-  const { slug } = useParams();
+  const [show, setShow] = useState(false);
+
+  const toggle = () => setShow(!show);
 
   useEffect(() => {
     getSingleProduct(slug)
@@ -38,12 +40,6 @@ const ProductPage = () => {
       .catch((err) => console.log(err));
   }, [slug]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setFeedbacks([...feedbacks, feedback]);
-    setFeedback("");
-  };
-
   return (
     <Container>
       <Row className="my-3">
@@ -53,7 +49,7 @@ const ProductPage = () => {
               <Carousel.Item key={index}>
                 <CardImg
                   src={image}
-                  height={300}
+                  height={400}
                   style={{ objectFit: "contain" }}
                 />
               </Carousel.Item>
@@ -74,7 +70,11 @@ const ProductPage = () => {
               {product.discount}% Off
             </Badge>
           </div>
-          <Button variant="primary" className="my-3">
+          <Button
+            variant="primary"
+            className="my-3"
+            onClick={() => IncrementItemQuantity(product)}
+          >
             Add to Cart
           </Button>
           <hr />
@@ -82,30 +82,49 @@ const ProductPage = () => {
             <h4 className="text-primary">Description : </h4>
             <p>{product.description}</p>
           </div>
+          <hr />
+          <div className="text-capitalize">
+            <h4 className="text-primary">Product Details : </h4>
+            <p>
+              <b>Name : </b>
+              {product?.name}
+            </p>
+            <p>
+              <b>Brand : </b>
+              {product?.brand}
+            </p>
+            <Collapse in={show}>
+              <div>
+                <p>
+                  <b>Price : </b>₹{product?.pricePerKg || product.pricePerPiece}
+                  {product.pricePerKg ? " / Kg" : " / Piece"}
+                </p>
+                <p>
+                  <b>Category : </b>
+                  {product?.category?.name}
+                </p>
+                <p>
+                  <b>Sub-Category : </b>
+                  {product?.subCategory?.name}
+                </p>
+                <p>
+                  <b>Sold By : </b>Grocery Store
+                </p>
+              </div>
+            </Collapse>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-info rounded"
+              onClick={toggle}
+            >
+              {show ? "Collapse" : "View More"}
+            </Button>
+          </div>
         </Col>
       </Row>
       <hr />
-      <h3 className="text-primary">Customer Feedback</h3>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="feedbackForm">
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-            placeholder="Write your feedback here"
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit" className="my-2">
-          Submit
-        </Button>
-      </Form>
-      <br />
-      <ListGroup>
-        {feedbacks.map((feedback, index) => (
-          <ListGroup.Item key={index}>{feedback}</ListGroup.Item>
-        ))}
-      </ListGroup>
+      <Feedback product={product} />
     </Container>
   );
 };

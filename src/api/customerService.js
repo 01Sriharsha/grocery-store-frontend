@@ -40,10 +40,31 @@ export const deleteCartItem = (cartItemId) =>
   apiClient.delete(`/cart/${cartItemId}`);
 
 //Order Api's
-export const createOrder = (customerId , orderData) =>
-  apiClient.post(`/customers/${customerId}/orders`,orderData);
+export const createOrder = (customerId, orderData) =>
+  apiClient.post(`/customers/${customerId}/orders`, orderData);
 
 export const getAllOrders = () => apiClient.get("/orders");
 
 export const getAllOrdersByCustomer = (customerId) =>
   apiClient.get(`/customers/${customerId}/orders`);
+
+//Feedback Api's
+export const createFeedback = (customerId, productId, feedbackData) =>
+  apiClient.post(
+    `/customers/${customerId}/products/${productId}/feedbacks`,
+    feedbackData
+  );
+
+export const getAllFeedbacks = () => apiClient.get(`/feedbacks`);
+
+export const getAllFeedbacksByCustomer = (customerId) =>
+  apiClient.get(`/customers/${customerId}/feedbacks`);
+
+export const getAllFeedbacksByProduct = (productId) =>
+  apiClient.get(`/products/${productId}/feedbacks`);
+
+export const upadteFeedback = (feedbackId) =>
+  apiClient.put(`/feedbacks/${feedbackId}`);
+
+export const deleteFeedback = (feedbackId) =>
+  apiClient.delete(`/feedbacks/${feedbackId}`);
