@@ -35,13 +35,15 @@ export default function ProductContext({ children }) {
   }, [reset]);
 
   useEffect(() => {
-    getAllCartItemsByCustomerId(context.user?.id)
-      .then((res) => setCartItems(res.data))
-      .catch((err) => console.log(err));
+    context.user !== "admin" &&
+      getAllCartItemsByCustomerId(context.user?.id)
+        .then((res) => setCartItems(res.data))
+        .catch((err) => console.log(err));
     return () => setLoad(false);
-  }, [context.user?.id, load]);
+  }, [context.user, load]);
 
   const IncrementItemQuantity = (product) => {
+    // debugger;
     const itemExisted = cartItems.find((item) => item.id == product.id);
     if (!itemExisted) {
       setCartItems([...cartItems, { ...product, quantity: 1 }]);
@@ -55,12 +57,18 @@ export default function ProductContext({ children }) {
         })
       );
     }
-    addOrUpdateCart(context.user?.id, product.id);
+    context.user !== "admin" && addOrUpdateCart(context.user?.id, product.id);
     setLoad(true);
   };
 
   const decrementItemQuantity = (product) => {
-    if (product.quantity <= 1) removeCartItem(product.cartId);
+    if (product.quantity <= 1) {
+      context.user && removeCartItem(product.cartId);
+
+      //for not a logged in user
+      const arr = cartItems.filter((item) => item.id !== product.id);
+      return setCartItems([...arr]);
+    }
 
     if (product.quantity > 1) decrementCartItemQuantity(product.cartId);
 
@@ -74,35 +82,38 @@ export default function ProductContext({ children }) {
     );
   };
 
-  const removeCartItem = (cartItemID) => {
-    deleteCartItem(cartItemID)
-      .then((res) => {
-        const newArr = cartItems.filter((item) => {
-          console.log(item);
-          return item.cartId !== cartItemID;
+  const removeCartItem = (id) => {
+    if (context.isAuthenticated && context.user !== "admin") {
+      deleteCartItem(id)
+        .then((res) => {
+          const newArr = cartItems.filter((item) => {
+            console.log(item);
+            return item.cartId !== id;
+          });
+          setCartItems(newArr);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Failed to remove cart item");
         });
-        setCartItems(newArr);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Failed to remove cart item");
-      });
+    } else {
+      //for not a logged in user
+      const arr = cartItems.filter((item) => item.id !== id);
+      return setCartItems([...arr]);
+    }
   };
 
   const clearCart = () => {
-    toast
-      .promise(
-        deleteAllCartItemsOfCustomer(context.user?.id),
-        {
-          pending: "Clearing....",
-          error: "Failed to clear cart!!",
-        },
-        TOAST_PROP
-      )
-      .then(() => setCartItems([]));
+    //make api call , only if the user is authenticated and not an admin
+    if (context.isAuthenticated && context.user !== "admin") {
+      return deleteAllCartItemsOfCustomer(context.user?.id);
+    } else {
+      return setCartItems([]);
+    }
   };
 
   const handleDelete = (id) => {
+    context.user==="admin" &&
     toast
       .promise(
         deleteProduct(id),

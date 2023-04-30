@@ -79,7 +79,7 @@ const OrderModal = ({ show, toggle, orderDetails }) => {
             </Accordion.Header>
             <Accordion.Body className="text-capitalize">
               <div className="d-flex w-100 justify-content-between gap-2 align-items-center mb-3">
-                <span>Name : {user.name}</span>
+                <span>Name : {user?.name}</span>
                 <FiEdit
                   role="button"
                   size={"1.2rem"}
@@ -89,9 +89,9 @@ const OrderModal = ({ show, toggle, orderDetails }) => {
               </div>
               {!edit && (
                 <div>
-                  <p>Phone : {user.phone}</p>
-                  <p>Address : {user.address}</p>
-                  <p>City : {user.city}</p>
+                  <p>Phone : {user?.phone}</p>
+                  <p>Address : {user?.address}</p>
+                  <p>City : {user?.city}</p>
                 </div>
               )}
               <Collapse in={edit}>

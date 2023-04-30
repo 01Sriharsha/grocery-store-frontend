@@ -14,7 +14,7 @@ const Header = () => {
 
   const { cartItems } = ProductContextApi();
 
-  const totalQuantity = cartItems.reduce((quantity, item) => {
+  const totalQuantity = cartItems?.reduce((quantity, item) => {
     return item.quantity + quantity;
   }, 0);
 

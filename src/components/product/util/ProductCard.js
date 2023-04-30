@@ -44,7 +44,7 @@ const ProductCard = ({ product }) => {
           <Carousel controls={images.length > 1} variant="dark" interval={700}>
             {images.map((image, index) => (
               <Carousel.Item key={index}>
-                <Card.Img variant="top" src={image} height={210} />
+                <Card.Img variant="top" src={image} height={230} />
               </Carousel.Item>
             ))}
           </Carousel>
@@ -103,7 +103,9 @@ const ProductCard = ({ product }) => {
                   </Card.Title>
                   <Card.Text>
                     {product.quantity} X{" ₹"}
-                    {product.price}
+                    {product.price ||
+                      product.pricePerKg ||
+                      product.pricePerPiece}
                   </Card.Text>
                   <div className="d-flex justify-content-between align-items-center w-100">
                     <span>
@@ -135,11 +137,17 @@ const ProductCard = ({ product }) => {
                 role="button"
                 size="1.5rem"
                 color="red"
-                onClick={() => removeCartItem(product.cartId)}
+                //send product id , for user who is not logged in
+                onClick={() => removeCartItem(product.cartId || product.id)}
               />
               <div className="fw-bold">
                 <span>Subtotal : ₹</span>
-                <span>{product.quantity * product.price}</span>
+                <span>
+                  {product.quantity *
+                    (product.price ||
+                      product.pricePerKg ||
+                      product.pricePerPiece)}
+                </span>
               </div>
             </div>
           </Card.Footer>

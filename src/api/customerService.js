@@ -48,6 +48,9 @@ export const getAllOrders = () => apiClient.get("/orders");
 export const getAllOrdersByCustomer = (customerId) =>
   apiClient.get(`/customers/${customerId}/orders`);
 
+export const updateOrderByCustomer = (orderId, orderData) =>
+  apiClient.put(`/orders/${orderId}/customer`, orderData);
+
 //Feedback Api's
 export const createFeedback = (customerId, productId, feedbackData) =>
   apiClient.post(
@@ -63,8 +66,18 @@ export const getAllFeedbacksByCustomer = (customerId) =>
 export const getAllFeedbacksByProduct = (productId) =>
   apiClient.get(`/products/${productId}/feedbacks`);
 
-export const upadteFeedback = (feedbackId) =>
-  apiClient.put(`/feedbacks/${feedbackId}`);
+export const upadteFeedback = (feedbackId, feedbackData) =>
+  apiClient.put(`/feedbacks/${feedbackId}`, feedbackData);
 
 export const deleteFeedback = (feedbackId) =>
   apiClient.delete(`/feedbacks/${feedbackId}`);
+
+//product request Api's
+export const postARequest = (requestData, customerId) =>
+  apiClient.post(`/customers/${customerId}/requests`, requestData);
+
+export const getAllProductRequestsByCustomer = (customerId) =>
+  apiClient.get(`/customers/${customerId}/requests`);
+
+export const deleteProductRequest = (requestId) =>
+  apiClient.delete(`/requests/${requestId}`);

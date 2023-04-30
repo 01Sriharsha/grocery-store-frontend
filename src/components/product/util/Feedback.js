@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Collapse, Form, Row } from "react-bootstrap";
 import {
   createFeedback,
   getAllFeedbacksByProduct,
@@ -8,6 +8,7 @@ import { VscFeedback } from "react-icons/vsc";
 import { toast } from "react-toastify";
 import { TOAST_PROP } from "../../../App";
 import { CustomContext } from "../../../context/AuthContext";
+import { AiFillEye } from "react-icons/ai";
 
 const Feedback = ({ product }) => {
   const { user } = CustomContext();
@@ -15,6 +16,10 @@ const Feedback = ({ product }) => {
   const [feedback, setFeedback] = useState("");
 
   const [feedbacks, setFeedbacks] = useState([]);
+
+  const [show, setShow] = useState(false);
+
+  const toggle = () => setShow(!show);
 
   useEffect(() => {
     getAllFeedbacksByProduct(product.id)
@@ -56,7 +61,23 @@ const Feedback = ({ product }) => {
                     <span className="fs-5">{feedback.customer.name}</span>
                     <span className="text-muted">{feedback.date}</span>
                   </p>
-                  <p>{feedback.message}</p>
+                  <p className="d-flex align-items-center justify-content-between">
+                    <span>{feedback.message}</span>
+                    {feedback.reply && (
+                      <Button
+                        variant="link"
+                        className="d-flex align-items-center gap-1"
+                        onClick={toggle}
+                        size="sm"
+                      >
+                        <AiFillEye size={'1.1rem'} className="text-primary" />
+                        <span>Reply</span>
+                      </Button>
+                    )}
+                  </p>
+                  <Collapse in={show}>
+                    <div>{feedback.reply}</div>
+                  </Collapse>
                 </div>
               </Card.Body>
             </Card>

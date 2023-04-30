@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { ProductContextApi } from "../../../context/ProductContext";
 import ProductCard from "../util/ProductCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OrderModal from "../util/OrderModal";
 import { toast } from "react-toastify";
+import { CustomContext } from "../../../context/AuthContext";
 
 const Cart = () => {
   const { cartItems, clearCart } = ProductContextApi();
+
+  const {isAuthenticated} = CustomContext();
+
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
 
@@ -16,7 +21,9 @@ const Cart = () => {
   const flexStyle = "d-flex justify-content-between align-items-center";
 
   const subTotals = cartItems.map((item) => {
-    return item.quantity * item.price;
+    return (
+      item.quantity * (item.price || item.pricePerKg || item.pricePerPiece)
+    );
   });
 
   const totalPrice = subTotals.reduce((acc, curr) => {
@@ -75,7 +82,12 @@ const Cart = () => {
                   </Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                  <Button className="w-100" onClick={toggle}>
+                  <Button
+                    className="w-100"
+                    onClick={() => {
+                      isAuthenticated ? toggle() : navigate("/login");
+                    }}
+                  >
                     Checkout
                   </Button>
                   <OrderModal

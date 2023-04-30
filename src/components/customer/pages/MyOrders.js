@@ -9,8 +9,14 @@ import {
   Col,
   Collapse,
 } from "react-bootstrap";
-import { getAllOrdersByCustomer } from "../../../api/customerService";
+import {
+  getAllOrdersByCustomer,
+  updateOrderByCustomer,
+} from "../../../api/customerService";
 import { CustomContext } from "../../../context/AuthContext";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { TOAST_PROP } from "../../../App";
 
 const MyOrders = () => {
   const { user } = CustomContext();
@@ -21,13 +27,43 @@ const MyOrders = () => {
 
   const toggle = () => setShow(!show);
 
-  useEffect(() => {
-    getAllOrdersByCustomer(user.id).then((res) => {
-      console.log(res.data);
-      setOrders(res.data);
-    });
-  }, [user.id]);
+  const loadAllOrdersByCustomer = () => {
+    getAllOrdersByCustomer(user.id)
+      .then((res) => {
+        console.log(res.data);
+        setOrders(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
+  useEffect(() => {
+    loadAllOrdersByCustomer();
+  }, []);
+
+  const handleCancellation = (order) => {
+    updateOrderByCustomer(order.orderId, { ...order, cancel: "pending" })
+      .then((res) => {
+        toast.success("Cancellation request has been sent!!", TOAST_PROP);
+        loadAllOrdersByCustomer();
+      })
+      .catch((err) => {
+        toast.error("Failed to send cancellation request", TOAST_PROP);
+      });
+  };
+
+  if (orders.length === 0) {
+    return (
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ minHeight: "70vh" }}
+      >
+        <h3>No Orders</h3>
+        <p>
+          <Link to="/products">Click Here</Link> to shop...!
+        </p>
+      </div>
+    );
+  }
   return (
     <Container className="p-1">
       <Card className="border-0" style={{ backgroundColor: "transparent" }}>
@@ -38,8 +74,14 @@ const MyOrders = () => {
           {orders.map((order) => (
             <Card key={order.orderId} className="my-3 shadow">
               <Card.Body>
-                <Card.Title className="fw-bold">
-                  Order #{order.orderId}
+                <Card.Title className="fw-bold d-flex justify-content-between">
+                  <span>Order #{order.orderId}</span>
+                  {order.cancel && (
+                    <span className="fs-6">
+                      <b>Cancel status : </b>
+                      <span className="text-info">{order.cancel.toUpperCase()}</span>
+                    </span>
+                  )}
                 </Card.Title>
                 <div>
                   <Row className="my-2">
@@ -95,7 +137,11 @@ const MyOrders = () => {
                 <Button variant="primary" size="sm" onClick={toggle}>
                   View Order Details
                 </Button>{" "}
-                <Button variant="danger" size="sm">
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleCancellation(order)}
+                >
                   Request Cancellation
                 </Button>
               </Card.Body>

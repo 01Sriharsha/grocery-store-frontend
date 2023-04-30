@@ -1,3 +1,11 @@
+.home-bg{
+  background-image: url("./assets/bg-8.jpg");
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  min-height: 100% !important;
+}
+
 .login-bg{
   background-image: url("./assets/login-bg.jpg");
   background-position: center !important;
@@ -72,4 +80,14 @@ hr{
 
 .active{
   display : block !important
+}
+
+.admin-sidebar a:active{
+  background-color: #e95420 !important;
+  color: white !important;
+}
+
+.admin-sidebar a:hover{
+    background-color: #e95420 !important;
+    color: white !important;
 }

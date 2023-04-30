@@ -25,14 +25,14 @@ const AdminSidebar = () => {
         zIndex: 1
       }}
     >
-      <Sidebar style={{ display: "flex" }} breakPoint="xs">
+      <Sidebar className="admin-sidebar" style={{ display: "flex" }} breakPoint="xs">
         <Menu className="" style={{ height: "100%" }}>
           <MenuItem
             icon={<BiMenu size="1.6rem" />}
             onClick={() => collapseSidebar()}
             className="text-center"
           >
-            <h3 className="text-primary">Admin</h3>
+            <h3>Admin</h3>
           </MenuItem>
           <MenuItem
             icon={<BiCategory />}
@@ -63,6 +63,18 @@ const AdminSidebar = () => {
             component={<Link to="/admin/manage-orders" />}
           >
             Manage Orders
+          </MenuItem>
+          <MenuItem
+            icon={<CgProductHunt />}
+            component={<Link to="/admin/manage-feedbacks" />}
+          >
+            Manage Feedbacks
+          </MenuItem>
+          <MenuItem
+            icon={<CgProductHunt />}
+            component={<Link to="/admin/product-requests" />}
+          >
+            View All Product Requests
           </MenuItem>
           <MenuItem icon={<BiLogOut />} onClick={toggle}>
             <span>Logout</span>

@@ -26,6 +26,10 @@ import MyOrders from "./components/customer/pages/MyOrders";
 import CustomerDashboard from "./components/customer/pages/CustomerDashboard";
 import ProductPage from "./components/product/pages/ProductPage";
 import ManageOrders from "./components/admin/pages/ManageOrders";
+import ManageFeedbacks from "./components/admin/pages/ManageFeedbacks";
+import MyRequests from "./components/customer/pages/MyRequests";
+import PostRequest from "./components/customer/pages/PostRequest";
+import AllProductRequests from "./components/admin/pages/AllProductRequests";
 
 export const TOAST_PROP = { position: "top-center", hideProgressBar: true };
 
@@ -68,12 +72,16 @@ const App = () => {
                   />
                   <Route path="add-product" element={<AddProduct />} />
                   <Route path="manage-orders" element={<ManageOrders />} />
+                  <Route path="manage-feedbacks" element={<ManageFeedbacks />} />
+                  <Route path="product-requests" element={<AllProductRequests />} />
                 </Route>
 
                 {/**Customer */}
                 <Route path="/customer" element={<CustomerDashboard />}>
                   <Route path="account" element={<MyAccount />} />
                   <Route path="orders" element={<MyOrders />} />
+                  <Route path="post-request" element={<PostRequest />} />
+                  <Route path="requests" element={<MyRequests />} />
                 </Route>
               </Route>
             </Routes>

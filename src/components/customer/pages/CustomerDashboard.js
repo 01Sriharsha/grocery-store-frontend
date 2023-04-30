@@ -53,6 +53,22 @@ const CustomerDashboard = () => {
                   </ListGroupItem>
 
                   <ListGroupItem
+                    as={Link}
+                    to="/customer/post-request"
+                    active={pathname === "/customer/post-request"}
+                  >
+                   Request A Product
+                  </ListGroupItem>
+
+                  <ListGroupItem
+                    as={Link}
+                    to="/customer/requests"
+                    active={pathname === "/customer/requests"}
+                  >
+                    My Requests
+                  </ListGroupItem>
+
+                  <ListGroupItem
                     role="button"
                     className="d-flex align-items-center gap-1"
                     onClick={toggle}
