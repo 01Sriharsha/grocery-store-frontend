@@ -45,6 +45,45 @@ const ManageOrders = () => {
       });
   };
 
+  const findStatus = (order) => {
+    if (order.cancel === "approved" || order.cancel === "rejected")
+      return "Canceled";
+
+    if (!order.dispatched) return "Not dispatched";
+
+    if (order.dispatched && !order.delivered) return "Not delivered";
+
+    if (order.dispatched && order.delivered) return "Dispatched and delivered";
+  };
+
+  const findAction = (order) => {
+    if (order.cancel === "approved" || order.cancel === "rejected") return "-";
+
+    if (!order.dispatched)
+      return (
+        <Button
+          variant="success"
+          size="sm"
+          onClick={() => updateOrder(order, { dispatched: true })}
+        >
+          Dispatch
+        </Button>
+      );
+
+    if (order.dispatched && !order.delivered)
+      return (
+        <Button
+          variant="success"
+          size="sm"
+          onClick={() => updateOrder(order, { delivered: true })}
+        >
+          Delivered
+        </Button>
+      );
+
+    if (order.dispatched && order.delivered) return "-";
+  };
+
   if (orders.length === 0) {
     return (
       <div className="" style={{ minHeight: "70vh" }}>
@@ -84,55 +123,10 @@ const ManageOrders = () => {
                     ))}
                   </td>
                   <td>₹{order.totalPrice}</td>
-                  {!order.dispatched && (
-                    <>
-                      <td>
-                        {order.dispatched ? "Dispatched" : "Not Dispatched"}
-                      </td>
-                      <td>
-                        {!order.dispatched && (
-                          <Button
-                            variant="success"
-                            size="sm"
-                            onClick={() =>
-                              updateOrder(order, { dispatched: true })
-                            }
-                          >
-                            Dispatch
-                          </Button>
-                        )}
-                      </td>
-                    </>
-                  )}
 
-                  {order.dispatched && !order.delivered && (
-                    <>
-                      <td>{order.delivered ? "Delivered" : "Not Delivered"}</td>
-                      <td>
-                        {!order.delivered && (
-                          <Button
-                            variant="success"
-                            size="sm"
-                            onClick={() =>
-                              updateOrder(order, { delivered: true })
-                            }
-                          >
-                            Delivered
-                          </Button>
-                        )}
-                      </td>
-                    </>
-                  )}
+                  <td>{findStatus(order)}</td>
 
-                  {order.dispatched && order.delivered && (
-                    <>
-                      <td>
-                        Disptached <br />
-                        and Delivered
-                      </td>
-                      <td>-</td>
-                    </>
-                  )}
+                  <td>{findAction(order)}</td>
 
                   {order.cancel === "pending" ? (
                     <td>
@@ -154,7 +148,7 @@ const ManageOrders = () => {
                       </div>
                     </td>
                   ) : (
-                  <td>-</td>
+                    <td>-</td>
                   )}
                 </tr>
               ))}

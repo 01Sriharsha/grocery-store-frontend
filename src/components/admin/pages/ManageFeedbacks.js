@@ -13,10 +13,14 @@ const ManageFeedbacks = () => {
 
   const [feed, setFeed] = useState({});
 
-  useEffect(() => {
+  const loadAllFeedbacks = () => {
     getAllFeedbacks()
       .then((res) => setFeedbacks(res.data))
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    loadAllFeedbacks();
   }, []);
 
   return (
@@ -80,7 +84,12 @@ const ManageFeedbacks = () => {
                 </tr>
               ))}
             </tbody>
-            <FeedbackReplyModal feedback={feed} show={show} toggle={toggle} />
+            <FeedbackReplyModal
+              feedback={feed}
+              show={show}
+              toggle={toggle}
+              loadAllFeedbacks={loadAllFeedbacks}
+            />
           </Table>
         </Card.Body>
       </Card>

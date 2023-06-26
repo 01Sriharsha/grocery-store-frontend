@@ -13,6 +13,8 @@ import { AiFillEye } from "react-icons/ai";
 const Feedback = ({ product }) => {
   const { user } = CustomContext();
 
+  console.log(user);
+
   const [feedback, setFeedback] = useState("");
 
   const [feedbacks, setFeedbacks] = useState([]);
@@ -28,6 +30,14 @@ const Feedback = ({ product }) => {
   }, [product]);
 
   const handleClick = () => {
+    if (user === "admin") {
+      toast.error("Admin cannot give feedback!!", TOAST_PROP);
+      return;
+    }
+    if (feedback.length === 0) {
+      toast.error("Feedback cannot be empty!!", TOAST_PROP);
+      return;
+    }
     toast
       .promise(
         createFeedback(user.id, product.id, { message: feedback }),
@@ -70,7 +80,7 @@ const Feedback = ({ product }) => {
                         onClick={toggle}
                         size="sm"
                       >
-                        <AiFillEye size={'1.1rem'} className="text-primary" />
+                        <AiFillEye size={"1.1rem"} className="text-primary" />
                         <span>Reply</span>
                       </Button>
                     )}

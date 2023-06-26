@@ -1,6 +1,8 @@
-import { Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { getAllCustomers } from "../../../api/customerService";
+import { deleteCustomer, getAllCustomers } from "../../../api/customerService";
+import { toast } from "react-toastify";
+import { TOAST_PROP } from "../../../App";
 
 function ManageCustomers() {
   const [customers, setCustomers] = useState([]);
@@ -10,6 +12,25 @@ function ManageCustomers() {
       .then((res) => setCustomers(res.data))
       .catch((err) => console.log(err));
   }, []);
+
+  const handleDelete = (customer) => {
+    toast
+      .promise(
+        deleteCustomer(customer.id),
+        {
+          pending: "Deleting....",
+          success: "Customer profile deleted successfully!!",
+        },
+        TOAST_PROP
+      )
+      .then((res) => {
+        const newArr = customers.filter((c) => c.id !== customer.id);
+        setCustomers(newArr);
+      })
+      .catch((err) => {
+        toast.error("Failed to delete customer account!!", TOAST_PROP);
+      });
+  };
 
   return (
     <div className="p-3">
@@ -53,13 +74,11 @@ function ManageCustomers() {
                   <Col xs={9}>{customer.city}</Col>
                 </Row>
               </Card.Body>
-              {/**
-                   * <Card.Footer className="d-flex justify-content-end">
-                  <Button variant="primary" size="sm" onClick={exportCustomers}>
-                    Export CSV
-                  </Button>
-                </Card.Footer>
-                   */}
+              <div className="d-flex justify-content-end pb-3 px-3">
+                <Button size="sm" variant="danger" onClick={() => handleDelete(customer)}>
+                  Delete
+                </Button>
+              </div>
             </Card>
           </Col>
         ))}

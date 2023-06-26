@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { upadteFeedback } from "../../../api/customerService";
 import { TOAST_PROP } from "../../../App";
 
-const FeedbackReplyModal = ({ feedback, show, toggle }) => {
+const FeedbackReplyModal = ({ feedback, show, toggle, loadAllFeedbacks }) => {
   const [reply, setReply] = useState("");
 
   const handleClick = () => {
@@ -18,6 +18,7 @@ const FeedbackReplyModal = ({ feedback, show, toggle }) => {
         TOAST_PROP
       )
       .then((res) => {
+        loadAllFeedbacks();
         toggle();
         setReply("");
       })
@@ -32,7 +33,9 @@ const FeedbackReplyModal = ({ feedback, show, toggle }) => {
 
   return (
     <Modal show={show} onHide={toggle}>
-      <Modal.Header className="text-primary fs-4" closeButton>Reply to #{feedback.id}</Modal.Header>
+      <Modal.Header className="text-primary fs-4" closeButton>
+        Reply to #{feedback.id}
+      </Modal.Header>
       <Modal.Body>
         <Form.Control
           as="textarea"
